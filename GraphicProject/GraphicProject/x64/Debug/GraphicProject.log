@@ -1,0 +1,5 @@
+﻿  Game.cpp
+C:\Users\u5674759\source\repos\GraphicProject\GraphicProject\Adapter.h(36,34): warning C4018: '>': signed/unsigned mismatch
+  (compiling source file 'Game.cpp')
+  
+  GraphicProject.vcxproj -> C:\Users\u5674759\source\repos\GraphicProject\GraphicProject\x64\Debug\GraphicProject.exe
