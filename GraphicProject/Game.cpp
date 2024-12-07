@@ -27,10 +27,10 @@ int  WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine, int n
 
 	Matrix planeWorld;
 
-	Matrix p = Matrix::perspective(45.0f, 1.0f, 0.1f, 100.0f);
-	Matrix v = Matrix::lookAt(Vec3(0,1, -1), Vec3(0, 0, 0), Vec3(0, 1, 0));
-	//Matrix vp =  view*projection;
-	DirectX::XMMATRIX view = camera.GetViewMatrix();
+	//Matrix p = Matrix::perspective(45.0f, 1.0f, 0.1f, 100.0f);
+	//Matrix v = Matrix::lookAt(Vec3(0,1, -1), Vec3(0, 0, 0), Vec3(0, 1, 0));
+	////Matrix vp =  view*projection;
+	//DirectX::XMMATRIX view = camera.GetViewMatrix();
 	// Create World, View, Projection Matrices
 	DirectX::XMMATRIX world = DirectX::XMMatrixIdentity(); // No translation; cube is already centered
 	DirectX::XMMATRIX projection = DirectX::XMMatrixPerspectiveFovLH(
