@@ -10,6 +10,20 @@
 
 using namespace std;
 
+
+//enum class ShaderStage {
+//    VertexShader,
+//    PixelShader,
+//    RexShader 
+//};
+//struct ShaderResource {
+//    ID3D11DeviceChild* shader;
+//    std::vector<ConstantBuffer> constantBuffers;
+//    std::map<std::string, int> textureBindPoints;
+//};
+
+
+
 class Shader {
 public:
 	ID3D11VertexShader* vertexShader;
@@ -20,7 +34,7 @@ public:
     vector<ConstantBuffer> vsConstantBuffers;
     map<std::string, int> textureBindPointsVS;
     map<std::string, int> textureBindPointsPS;
-    bool hasLayout = true;
+    bool hasLayout = false;
 
 	void init(string vs,string ps,DXcore *core ) {
         string vertexShaderHLSL = readFile(vs);
@@ -30,9 +44,6 @@ public:
         loadVS(core, vertexShaderHLSL);
         loadPS(core, pixelShaderHLSL);
         
-
-        
-    
 
 	}
 
@@ -78,7 +89,7 @@ public:
 
         };
         core->device->CreateInputLayout(layoutDesc, 6, shader->GetBufferPointer(), shader->GetBufferSize(), &layout);
-
+        hasLayout = true;
         
     }
     
@@ -129,9 +140,13 @@ public:
 
     void apply(DXcore* core) {
 
+        if (hasLayout) {
+            core->devicecontext->IASetInputLayout(layout);
+        }
+        else {
+            core->devicecontext->IASetInputLayout(NULL);
+        }
         
-        core->devicecontext->IASetInputLayout(layout);
-
         core->devicecontext->VSSetShader(vertexShader, NULL, 0);
         core->devicecontext->PSSetShader(pixelShader, NULL, 0);
         //core->devicecontext->PSSetShaderResources(0, 1, &srv);

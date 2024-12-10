@@ -1,6 +1,6 @@
 #pragma once
 #include"mathlib.h"
-#include"mathlib.h"
+#include<map>
 
 struct ANIMATED_VERTEX
 {
@@ -71,6 +71,7 @@ public:
 
 class Animation
 {
+	
 public:
 
 	std::map<std::string, AnimationSequence> animations;
@@ -128,7 +129,7 @@ public:
 		{
 			matrices[i] = animation->interpolateBoneToGlobal(name, matrices, frame, interpolationFact, i);
 		}
-		animation->calcFinalTransforms(matrices, coordTransform);
+		animation->calcFinalTransforms(matrices);
 	}
 
 

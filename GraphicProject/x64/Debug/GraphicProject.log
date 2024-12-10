@@ -1,36 +1,38 @@
 ﻿  Game.cpp
-C:\Users\u5674759\source\repos\GraphicProject\GraphicProject\Adapter.h(36,34): warning C4018: '>': signed/unsigned mismatch
+C:\Users\22870\source\repos\ComputerGraphic\GraphicProject\Adapter.h(36,34): warning C4018: '>': signed/unsigned mismatch
   (compiling source file 'Game.cpp')
   
-C:\Users\u5674759\source\repos\GraphicProject\GraphicProject\Animation.h(52,11): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\22870\source\repos\ComputerGraphic\GraphicProject\Animation.h(52,11): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
   (compiling source file 'Game.cpp')
   
-C:\Users\u5674759\source\repos\GraphicProject\GraphicProject\Animation.h(56,10): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\22870\source\repos\ComputerGraphic\GraphicProject\Animation.h(56,10): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
   (compiling source file 'Game.cpp')
   
-C:\Users\u5674759\source\repos\GraphicProject\GraphicProject\Mesh.h(87,87): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\22870\source\repos\ComputerGraphic\GraphicProject\Animation.h(79,36): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
   (compiling source file 'Game.cpp')
   
-C:\Users\u5674759\source\repos\GraphicProject\GraphicProject\Mesh.h(87,58): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\22870\source\repos\ComputerGraphic\GraphicProject\Mesh.h(88,87): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
   (compiling source file 'Game.cpp')
   
-C:\Users\u5674759\source\repos\GraphicProject\GraphicProject\Mesh.h(91,89): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\22870\source\repos\ComputerGraphic\GraphicProject\Mesh.h(88,58): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
   (compiling source file 'Game.cpp')
   
-C:\Users\u5674759\source\repos\GraphicProject\GraphicProject\Mesh.h(91,60): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\22870\source\repos\ComputerGraphic\GraphicProject\Mesh.h(92,89): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
   (compiling source file 'Game.cpp')
   
-C:\Users\u5674759\source\repos\GraphicProject\GraphicProject\ShaderReflection.h(48,26): warning C4101: 'data': unreferenced local variable
+C:\Users\22870\source\repos\ComputerGraphic\GraphicProject\Mesh.h(92,60): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
   (compiling source file 'Game.cpp')
   
-C:\Users\u5674759\source\repos\GraphicProject\GraphicProject\ShaderReflection.h(108,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\22870\source\repos\ComputerGraphic\GraphicProject\ShaderReflection.h(48,26): warning C4101: 'data': unreferenced local variable
   (compiling source file 'Game.cpp')
   
-C:\Users\u5674759\source\repos\GraphicProject\GraphicProject\ShaderReflection.h(116,22): warning C4018: '<': signed/unsigned mismatch
+C:\Users\22870\source\repos\ComputerGraphic\GraphicProject\ShaderReflection.h(108,21): warning C4018: '<': signed/unsigned mismatch
   (compiling source file 'Game.cpp')
   
-C:\Users\u5674759\source\repos\GraphicProject\GraphicProject\ShaderReflection.h(130,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\22870\source\repos\ComputerGraphic\GraphicProject\ShaderReflection.h(116,22): warning C4018: '<': signed/unsigned mismatch
   (compiling source file 'Game.cpp')
   
-     Creating library C:\Users\u5674759\source\repos\GraphicProject\x64\Debug\GraphicProject.lib and object C:\Users\u5674759\source\repos\GraphicProject\x64\Debug\GraphicProject.exp
-  GraphicProject.vcxproj -> C:\Users\u5674759\source\repos\GraphicProject\x64\Debug\GraphicProject.exe
+C:\Users\22870\source\repos\ComputerGraphic\GraphicProject\ShaderReflection.h(130,21): warning C4018: '<': signed/unsigned mismatch
+  (compiling source file 'Game.cpp')
+  
+  GraphicProject.vcxproj -> C:\Users\22870\source\repos\ComputerGraphic\x64\Debug\GraphicProject.exe

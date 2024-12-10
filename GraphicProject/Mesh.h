@@ -1,8 +1,9 @@
 #pragma once
-#include"mathlib.h"
+
 #include"DXcore.h"
 #include"GEMLoader.h"
 #include"Animation.h"
+#include"mathlib.h"
 struct Vertex {
 	Vec3 position;
 	Colour colour;
@@ -224,6 +225,7 @@ public:
 	std::vector<Mesh> meshes;
 
 	void init(string filename, ID3D11Device* device) {
+
 		GEMLoader::GEMModelLoader loader;
 		std::vector<GEMLoader::GEMMesh> gemmeshes;
 		loader.load(filename, gemmeshes);
@@ -238,13 +240,15 @@ public:
 			mesh.init(vertices, gemmeshes[i].indices,device);
 			meshes.push_back(mesh);
 		}
+
+
 	}
 	void draw(ID3D11DeviceContext* devicecontext) {
 		for (int i = 0; i < meshes.size(); i++)
 		{
 			meshes[i].draw(devicecontext);
 		}
-
+			
 	}
 };
 
@@ -253,6 +257,7 @@ class AnimationModel {
 public:
 	std::vector<Mesh> meshes;
 	Animation animation;
+	AnimationInstance instance;
 
 	void init(string filename, ID3D11Device* device) {
 		GEMLoader::GEMModelLoader loader;
@@ -306,6 +311,14 @@ public:
 			animation.animations.insert({ name, aseq });
 		}
 
+		instance.animation = &animation;
+	}
+
+	void draw(ID3D11DeviceContext* devicecontext) {
+		for (int i = 0; i < meshes.size(); i++)
+		{
+			meshes[i].draw(devicecontext);
+		}
 
 	}
 

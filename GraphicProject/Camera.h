@@ -4,7 +4,7 @@
 #include <windows.h>
 
 
-const float CAMERAHEIGHT = 1.0f;
+const float CAMERAHEIGHT = 5.0f;
 class Camera {
 public:
     // Constructor
