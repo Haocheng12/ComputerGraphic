@@ -4,13 +4,13 @@
 #include <windows.h>
 
 
-const float CAMERAHEIGHT = 5.0f;
+const float CAMERAHEIGHT = 1.0f;
 class Camera {
 public:
     // Constructor
     Camera(float aspectRatio)
         : position(0.0f, CAMERAHEIGHT, -1.0f),    // Initial camera position
-        target(0.0f, 0.0f, 0.0f),       // Initial target position
+        target(10.0f, 5.0f, 8.0f),       // Initial target position
         up(0.0f, 1.0f, 0.0f),            // Up direction
         yaw(0.0f), pitch(0.0f),          // Initial rotation angles
         speed(5.0f), sensitivity(0.1f),  // Movement and mouse sensitivity

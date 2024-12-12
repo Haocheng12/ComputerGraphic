@@ -2,13 +2,10 @@
 C:\Users\22870\source\repos\ComputerGraphic\GraphicProject\Adapter.h(36,34): warning C4018: '>': signed/unsigned mismatch
   (compiling source file 'Game.cpp')
   
-C:\Users\22870\source\repos\ComputerGraphic\GraphicProject\Animation.h(52,11): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\22870\source\repos\ComputerGraphic\GraphicProject\Animation.h(53,11): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
   (compiling source file 'Game.cpp')
   
-C:\Users\22870\source\repos\ComputerGraphic\GraphicProject\Animation.h(56,10): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
-  (compiling source file 'Game.cpp')
-  
-C:\Users\22870\source\repos\ComputerGraphic\GraphicProject\Animation.h(79,36): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\22870\source\repos\ComputerGraphic\GraphicProject\Animation.h(57,10): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
   (compiling source file 'Game.cpp')
   
 C:\Users\22870\source\repos\ComputerGraphic\GraphicProject\Mesh.h(88,87): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data

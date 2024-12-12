@@ -274,6 +274,8 @@ public:
     static Matrix scaling(float uniformScale) {
         return scaling(Vec3(uniformScale, uniformScale, uniformScale));
     }
+
+   
     static Matrix perspective(float fov, float aspect, float n, float f) {
         Matrix mat;
         float radians = 3.14159265359f / 180.0f * fov;

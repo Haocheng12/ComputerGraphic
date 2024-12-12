@@ -312,6 +312,7 @@ public:
 		}
 
 		instance.animation = &animation;
+		
 	}
 
 	void draw(ID3D11DeviceContext* devicecontext) {
