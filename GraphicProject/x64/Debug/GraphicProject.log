@@ -32,4 +32,5 @@ C:\Users\22870\source\repos\ComputerGraphic\GraphicProject\ShaderReflection.h(11
 C:\Users\22870\source\repos\ComputerGraphic\GraphicProject\ShaderReflection.h(130,21): warning C4018: '<': signed/unsigned mismatch
   (compiling source file 'Game.cpp')
   
+     Creating library C:\Users\22870\source\repos\ComputerGraphic\x64\Debug\GraphicProject.lib and object C:\Users\22870\source\repos\ComputerGraphic\x64\Debug\GraphicProject.exp
   GraphicProject.vcxproj -> C:\Users\22870\source\repos\ComputerGraphic\x64\Debug\GraphicProject.exe

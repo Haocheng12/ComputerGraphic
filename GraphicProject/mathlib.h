@@ -553,25 +553,51 @@ public:
     Quaternion operator*(float scalar) const {
         return Quaternion(w * scalar, x * scalar, y * scalar, z * scalar);
     }
+    float dot(const Quaternion& other) const {
+        return x * other.x + y * other.y + z * other.z + w * other.w;
+    }
+    static Quaternion slerp(const Quaternion& start, const Quaternion& end, float t) {
+        Quaternion q1 = start;
+        Quaternion q2 = end;
 
-    static Quaternion slerp(const Quaternion& q1, const Quaternion& q2, float t) {
-        float dot = q1.w * q2.w + q1.x * q2.x + q1.y * q2.y + q1.z * q2.z;
+        // Compute the dot product
+        float dot = q1.dot(q2);
 
+        // Ensure shortest path by flipping the sign if necessary
         if (dot < 0.0f) {
             dot = -dot;
-            return slerp(q1, q2 * -1.0f, t);
+            q2 = Quaternion(-q2.x, -q2.y, -q2.z, -q2.w);
         }
 
-        const float threshold = 0.9995f;
-        if (dot > threshold) {
-            Quaternion result = (q1 * (1.0f - t) + q2 * t).normalize();
-            return result;
+        const float epsilon = 0.001f; // Avoid division by zero or small-angle approximation
+
+        // If the quaternions are very close, linearly interpolate
+        if (dot > 1.0f - epsilon) {
+            return Quaternion(
+                q1.x * (1.0f - t) + q2.x * t,
+                q1.y * (1.0f - t) + q2.y * t,
+                q1.z * (1.0f - t) + q2.z * t,
+                q1.w * (1.0f - t) + q2.w * t
+            ).normalize();
         }
 
-        float theta_0 = acosf(dot);
-        float theta = theta_0 * t;
-        Quaternion q3 = (q2 - q1 * dot).normalize();
-        return q1 * cosf(theta) + q3 * sinf(theta);
+        // Compute the angle and its sine
+        float theta_0 = acos(dot);        // Angle between the two quaternions
+        float theta = theta_0 * t;       // Interpolated angle
+        float sin_theta_0 = sin(theta_0);
+        float sin_theta = sin(theta);
+
+        // Compute weights
+        float weight1 = sin(theta_0 - theta) / sin_theta_0;
+        float weight2 = sin(theta) / sin_theta_0;
+
+        // Compute the result quaternion
+        return Quaternion(
+            q1.x * weight1 + q2.x * weight2,
+            q1.y * weight1 + q2.y * weight2,
+            q1.z * weight1 + q2.z * weight2,
+            q1.w * weight1 + q2.w * weight2
+        );
     }
 
     void toMatrix3x3(float matrix[3][3]) const {
