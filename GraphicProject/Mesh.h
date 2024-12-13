@@ -285,7 +285,7 @@ public:
 			animation.skeleton.bones.push_back(bone);
 		}
 
-
+		
 		for (int i = 0; i < gemanimation.animations.size(); i++)
 		{
 			std::string name = gemanimation.animations[i].name;

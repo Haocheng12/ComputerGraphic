@@ -369,6 +369,7 @@ namespace GEMLoader
 			// Read skeleton
 			unsigned int bonesN = 0;
 			file.read(reinterpret_cast<char*>(&bonesN), sizeof(unsigned int));
+
 			for (unsigned int i = 0; i < bonesN; i++)
 			{
 				GEMBone bone;

@@ -35,12 +35,11 @@ public:
 
 
     Vec3 normalize() const {
-        float len = sqrtf(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
-        if (len > 0.0f) {
-            
-            return Vec3(v[0] / len, v[1] /len, v[2]/len);
+        float length = sqrt(x * x + y * y + z * z);
+        if (length > 0) {
+            return Vec3(x / length, y / length, z / length);
         }
-        return Vec3(0.0f, 0.0f, 0.0f); 
+        return Vec3(0, 0, 0);  // Return a zero vector if the length is zero
     }
 
     Vec3 operator-() const {
@@ -235,10 +234,9 @@ public:
    
     Matrix operator*(const Matrix& other) const {
         Matrix result;
-        for (int i = 0; i < 4; ++i) { // Row of A
-            for (int j = 0; j < 4; ++j) { // Column of B
-                result.m[i][j] = 0;
-                for (int k = 0; k < 4; ++k) { // Iterating over row-column pair
+        for (int i = 0; i < 4; ++i) {
+            for (int j = 0; j < 4; ++j) {
+                for (int k = 0; k < 4; ++k) {
                     result.m[i][j] += m[i][k] * other.m[k][j];
                 }
             }
@@ -378,7 +376,35 @@ public:
          return result;
      }
 
-     
+     Matrix normalize() {
+         Matrix result = *this;  // Make a copy of the current matrix
+
+         // Normalize the 3x3 rotation part of the matrix (top-left corner)
+         // Normalize the rows of the rotation part of the matrix
+         Vec3 row1(result.m[0][0], result.m[0][1], result.m[0][2]);
+         Vec3 row2(result.m[1][0], result.m[1][1], result.m[1][2]);
+         Vec3 row3(result.m[2][0], result.m[2][1], result.m[2][2]);
+
+         row1 = row1.normalize();  // Normalize the first row (X axis)
+         row2 = row2.normalize();  // Normalize the second row (Y axis)
+         row3 = row3.normalize();  // Normalize the third row (Z axis)
+
+         // Reassign the normalized values back into the matrix
+         result.m[0][0] = row1.x;
+         result.m[0][1] = row1.y;
+         result.m[0][2] = row1.z;
+
+         result.m[1][0] = row2.x;
+         result.m[1][1] = row2.y;
+         result.m[1][2] = row2.z;
+
+         result.m[2][0] = row3.x;
+         result.m[2][1] = row3.y;
+         result.m[2][2] = row3.z;
+
+         // The translation and scale parts remain unchanged
+         return result;
+     }
 
     void print() const {
         for (int i = 0; i < 4; i++) {
@@ -514,12 +540,10 @@ public:
         return Quaternion(cosf(halfAngle), axis.x * sinHalfAngle, axis.y * sinHalfAngle, axis.z * sinHalfAngle);
     }
 
-    float norm() const {
-        return sqrtf(w * w + x * x + y * y + z * z);
-    }
-
+    
+    
     Quaternion normalize() const {
-        float n = norm();
+        float n = sqrtf(w * w + x * x + y * y + z * z);
         if (n > 0.0f) {
             float invNorm = 1.0f / n;
             return Quaternion(w * invNorm, x * invNorm, y * invNorm, z * invNorm);
@@ -531,9 +555,9 @@ public:
         return Quaternion(w, -x, -y, -z);
     }
 
-    Quaternion inverse() const {
+    /*Quaternion inverse() const {
         return conjugate() * (1.0f / (norm() * norm()));
-    }
+    }*/
     Quaternion operator+(const Quaternion& q) const {
         return Quaternion(w + q.w, x + q.x, y + q.y, z + q.z);
     }
@@ -553,7 +577,7 @@ public:
     Quaternion operator*(float scalar) const {
         return Quaternion(w * scalar, x * scalar, y * scalar, z * scalar);
     }
-    float dot(const Quaternion& other) const {
+    float dot(const Quaternion other) const {
         return x * other.x + y * other.y + z * other.z + w * other.w;
     }
     static Quaternion slerp(const Quaternion& start, const Quaternion& end, float t) {
@@ -569,7 +593,7 @@ public:
             q2 = Quaternion(-q2.x, -q2.y, -q2.z, -q2.w);
         }
 
-        const float epsilon = 0.001f; // Avoid division by zero or small-angle approximation
+        const float epsilon = 0.01f; // Avoid division by zero or small-angle approximation
 
         // If the quaternions are very close, linearly interpolate
         if (dot > 1.0f - epsilon) {
@@ -617,6 +641,14 @@ public:
         matrix[2][1] = 2.0f * (yz + wx);
         matrix[2][2] = 1.0f - 2.0f * (xx + yy);
     }
+    static float clean(float value) {
+        const float epsilon = 1e-6f;  // Small threshold value to clean up floating-point errors
+        if (fabs(value) < epsilon) {
+            return 0.0f;
+        }
+        return value;
+    }
+
     Matrix toMatrix() const {
         Matrix result;
 
@@ -624,28 +656,29 @@ public:
         float xy = x * y, xz = x * z, yz = y * z;
         float wx = w * x, wy = w * y, wz = w * z;
 
-        result.m[0][0] = 1.0f - 2.0f * (yy + zz);
-        result.m[0][1] = 2.0f * (xy - wz);
-        result.m[0][2] = 2.0f * (xz + wy);
-        result.m[0][3] = 0.0f;
+        result.m[0][0] = clean(1.0f - 2.0f * (yy + zz));  // Row 0, Column 0
+        result.m[0][1] = clean(2.0f * (xy - wz));         // Row 0, Column 1
+        result.m[0][2] = clean(2.0f * (xz + wy));         // Row 0, Column 2
+        result.m[0][3] = 0.0f;                            // Row 0, Column 3
 
-        result.m[1][0] = 2.0f * (xy + wz);
-        result.m[1][1] = 1.0f - 2.0f * (xx + zz);
-        result.m[1][2] = 2.0f * (yz - wx);
-        result.m[1][3] = 0.0f;
+        result.m[1][0] = clean(2.0f * (xy + wz));         // Row 1, Column 0
+        result.m[1][1] = clean(1.0f - 2.0f * (xx + zz));  // Row 1, Column 1
+        result.m[1][2] = clean(2.0f * (yz - wx));         // Row 1, Column 2
+        result.m[1][3] = 0.0f;                            // Row 1, Column 3
 
-        result.m[2][0] = 2.0f * (xz - wy);
-        result.m[2][1] = 2.0f * (yz + wx);
-        result.m[2][2] = 1.0f - 2.0f * (xx + yy);
-        result.m[2][3] = 0.0f;
+        result.m[2][0] = clean(2.0f * (xz - wy));         // Row 2, Column 0
+        result.m[2][1] = clean(2.0f * (yz + wx));         // Row 2, Column 1
+        result.m[2][2] = clean(1.0f - 2.0f * (xx + yy));  // Row 2, Column 2
+        result.m[2][3] = 0.0f;                            // Row 2, Column 3
 
-        result.m[3][0] = 0.0f;
-        result.m[3][1] = 0.0f;
-        result.m[3][2] = 0.0f;
-        result.m[3][3] = 1.0f;
+        result.m[3][0] = 0.0f;                            // Row 3, Column 0
+        result.m[3][1] = 0.0f;                            // Row 3, Column 1
+        result.m[3][2] = 0.0f;                            // Row 3, Column 2
+        result.m[3][3] = 1.0f;                            // Row 3, Column 3
 
         return result;
     }
+
 
     void print() const {
         cout << "Quaternion(" << w << ", " << x << ", " << y << ", " << z << ")" << endl;

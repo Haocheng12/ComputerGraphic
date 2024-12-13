@@ -62,6 +62,7 @@ public:
 		Matrix rotation = interpolate(frames[baseFrame].rotations[boneIndex], frames[nextFrame(baseFrame)].rotations[boneIndex], interpolationFact).toMatrix();
 		Matrix translation = Matrix::translation(interpolate(frames[baseFrame].positions[boneIndex], frames[nextFrame(baseFrame)].positions[boneIndex], interpolationFact));
 		Matrix local = translation * rotation * scale;
+
 		if (skeleton->bones[boneIndex].parentIndex > -1)
 		{
 			Matrix global = matrices[skeleton->bones[boneIndex].parentIndex] * local;
@@ -73,12 +74,12 @@ public:
 
 class Animation
 {
-	
+
 public:
 
 	std::map<std::string, AnimationSequence> animations;
 	Skeleton skeleton;
-	
+
 
 	void calcFrame(std::string name, float t, int& frame, float& interpolationFact) {
 		animations[name].calcFrame(t, frame, interpolationFact);
