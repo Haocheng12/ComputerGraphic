@@ -35,20 +35,20 @@ int  WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine, int n
 
 	DirectX::XMMATRIX world = DirectX::XMMatrixIdentity();
 	DirectX::XMMATRIX skyWorld =XMMatrixTranslation(0.0f, -50.0f, 0.0f);
-	DirectX::XMMATRIX scale = DirectX::XMMatrixScaling(0.01f, 0.01f, 0.01f);  // Adjust scale as needed
+	DirectX::XMMATRIX scale = DirectX::XMMatrixScaling(0.01f, 0.01f, 0.01f);  
 	DirectX::XMMATRIX translate1 = DirectX::XMMatrixTranslation(5.0f, 0.0f, 5.0f);
 	DirectX::XMMATRIX translate2 = DirectX::XMMatrixTranslation(2.0f, 0.0f, 5.0f);
 	DirectX::XMMATRIX tree1World = scale * translate1;
 	DirectX::XMMATRIX tree2World = scale * translate2;
 
-	// Extract position by directly accessing the matrix elements
+	
 	
 	AABB tree1Collider;
-	tree1Collider.setFromCenterAndSize(XMFLOAT3(5.0f, 0.0f, 5.0f));  // Add the collider for tree1
+	tree1Collider.setFromCenterAndSize(XMFLOAT3(5.0f, 0.0f, 5.0f));  
 	Colliders.push_back(tree1Collider);
 
 	AABB tree2Collider;
-	tree2Collider.setFromCenterAndSize(XMFLOAT3(2.0f, 0.0f, 5.0f));  // Add the collider for tree2
+	tree2Collider.setFromCenterAndSize(XMFLOAT3(2.0f, 0.0f, 5.0f));  
 	Colliders.push_back(tree2Collider);
 
 	AABB trexCollider;
@@ -86,12 +86,10 @@ int  WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine, int n
 
 		
 		
-		tree1.draw(core.devicecontext,textures,&shader, tree1World,vp);  // Draw the pine model
+		tree1.draw(core.devicecontext,textures,&shader, tree1World,vp);  
 		tree2.draw(core.devicecontext, textures, &shader, tree2World, vp);
 
-		// Inside WinMain or wherever you update your game logic
 		
-
 		// Update the animation based on camera distance
 		animationController.update(trex, camera, TrexWorld, dt, Colliders);
 		trex.draw(core.devicecontext, textures, &shader, TrexWorld, vp);

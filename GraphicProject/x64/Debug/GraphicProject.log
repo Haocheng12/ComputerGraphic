@@ -26,5 +26,4 @@ C:\Users\22870\source\repos\ComputerGraphic\GraphicProject\Mesh.h(95,89): warnin
 C:\Users\22870\source\repos\ComputerGraphic\GraphicProject\Mesh.h(95,60): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
   (compiling source file 'Game.cpp')
   
-     Creating library C:\Users\22870\source\repos\ComputerGraphic\x64\Debug\GraphicProject.lib and object C:\Users\22870\source\repos\ComputerGraphic\x64\Debug\GraphicProject.exp
   GraphicProject.vcxproj -> C:\Users\22870\source\repos\ComputerGraphic\x64\Debug\GraphicProject.exe

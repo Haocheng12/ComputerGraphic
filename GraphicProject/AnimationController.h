@@ -11,11 +11,10 @@ public:
     void update(AnimationModel& trex, Camera& camera, DirectX::XMMATRIX& trexWorld, float dt, std::vector<AABB>& Colliders) {
         // Extract the translation (position) from the world matrix directly
         DirectX::XMFLOAT3 trexPosition;
-        trexPosition.x = trexWorld.r[3].m128_f32[0];  // X component from the 4th row, 1st column of the matrix
-        trexPosition.y = trexWorld.r[3].m128_f32[1];  // Y component from the 4th row, 2nd column of the matrix
-        trexPosition.z = trexWorld.r[3].m128_f32[2];  // Z component from the 4th row, 3rd column of the matrix
-
-        // Calculate the distance between camera and T-Rex in 2D (x, z plane)
+        trexPosition.x = trexWorld.r[3].m128_f32[0];  
+        trexPosition.y = trexWorld.r[3].m128_f32[1];  
+        trexPosition.z = trexWorld.r[3].m128_f32[2];  
+        // Calculate the distance between camera and TRex in 2D (x, z plane)
         float dx = trexPosition.x - camera.position.x;
         float dz = trexPosition.z - camera.position.z;
         float distance = sqrtf(dx * dx + dz * dz);
@@ -24,13 +23,12 @@ public:
         DirectX::XMFLOAT3 directionToCamera = normalizeDirection(trexPosition, camera.position);
         float angle = std::atan2(directionToCamera.x, directionToCamera.z);  // Calculate the angle in the XZ plane
 
-        // Update animation based on distance
+       
         if (distance > 30.0f && distance < 40.0f) {
-            // If the camera is far away (greater than 50), play "roar"
+           
             trex.instance.update("roar", dt);
         }
         else if (distance <= 30.0f && distance > 5.0f) {
-            // If the camera is within 30 units but greater than 5, play "walk" and move the T-Rex
             trex.instance.update("walk", dt);
 
             // Move the T-Rex towards the camera
@@ -46,20 +44,18 @@ public:
             trexWorld = rotation * translation;
 
             // Update the collider's position based on the new T-Rex position
-            updateCollider(Colliders[0], trexPosition);  // Update the collider for the T-Rex
+            updateCollider(Colliders[0], trexPosition);  
         }
         else if (distance <= 20.0f) {
-            // If the camera is too close (within 10), play "attack"
             trex.instance.update("attack", dt);
 
-            // Prevent the T-Rex from getting too close, move it away from the camera
             angle -= DirectX::XMConvertToRadians(180.0f);
             DirectX::XMMATRIX rotation = DirectX::XMMatrixRotationY(angle);
             DirectX::XMMATRIX translation = DirectX::XMMatrixTranslation(trexPosition.x, trexPosition.y, trexPosition.z);
             trexWorld = rotation * translation;
 
-            // Update the collider's position based on the new T-Rex position
-            updateCollider(Colliders[0], trexPosition);  // Update the collider for the T-Rex
+            
+            updateCollider(Colliders[0], trexPosition);  
         }
     }
 
@@ -74,7 +70,6 @@ private:
 
     // Helper function to update the collider's position based on the T-Rex's position
     void updateCollider(AABB& collider, const DirectX::XMFLOAT3& trexPosition) {
-        // Assuming the collider's center is at the T-Rex's position, set the AABB based on that
-        collider.setFromCenterAndSize(trexPosition);  // Adjust the size as needed
+        collider.setFromCenterAndSize(trexPosition);  
     }
 };

@@ -6,8 +6,6 @@ using namespace std;
 
 
 
-// A simple AABB for the trees (1x1 square)
-// A simple AABB class
 class AABB {
 public:
     DirectX::XMFLOAT3 max;
@@ -16,17 +14,17 @@ public:
     AABB() { reset(); }
 
     void reset() {
-        max = DirectX::XMFLOAT3(-0.3f, -FLT_MAX, -0.3f);  // Default size 1x1 collider
-        min = DirectX::XMFLOAT3(0.3f, FLT_MAX, 0.3f);    // Default size 1x1 collider
+        max = DirectX::XMFLOAT3(-0.3f, -FLT_MAX, -0.3f);  
+        min = DirectX::XMFLOAT3(0.3f, FLT_MAX, 0.3f);    
     }
 
     void setFromCenterAndSize(const DirectX::XMFLOAT3& center) {
-        max = DirectX::XMFLOAT3(center.x + 0.2f, center.y, center.z + 0.2f);  // AABB max corner (1x1 size centered at the position)
-        min = DirectX::XMFLOAT3(center.x - 0.2f, center.y, center.z - 0.2f);  // AABB min corner (1x1 size centered at the position)
+        max = DirectX::XMFLOAT3(center.x + 0.2f, center.y, center.z + 0.2f);  
+        min = DirectX::XMFLOAT3(center.x - 0.2f, center.y, center.z - 0.2f); 
     }
     void setFromCenterAndSize(const DirectX::XMFLOAT3& center,float size) {
-        max = DirectX::XMFLOAT3(center.x + size, center.y, center.z + size);  // AABB max corner (1x1 size centered at the position)
-        min = DirectX::XMFLOAT3(center.x - size, center.y, center.z - size);  // AABB min corner (1x1 size centered at the position)
+        max = DirectX::XMFLOAT3(center.x + size, center.y, center.z + size);  
+        min = DirectX::XMFLOAT3(center.x - size, center.y, center.z - size);  
     }
 
     // Optional: AABB intersects check

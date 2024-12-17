@@ -31,7 +31,7 @@ public:
         UpdateViewMatrix();
        
         if (GetAsyncKeyState(VK_ESCAPE) & 0x8000) {
-            PostMessage(hwnd, WM_CLOSE, 0, 0);  // Post a message to close the window
+            PostMessage(hwnd, WM_CLOSE, 0, 0);  // esc to close the window
         }
     }
 
@@ -63,7 +63,7 @@ public:
         // Calculate target
         DirectX::XMStoreFloat3(&target, DirectX::XMVectorAdd(pos, dir));
 
-        // Update the view matrix
+       
         viewMatrix = DirectX::XMMatrixLookAtLH(pos, DirectX::XMLoadFloat3(&target), upVec);
     }
 
@@ -104,7 +104,7 @@ public:
         if (newPosition.z > 50.0f) newPosition.z = 50.0f;
         // Check if the new position collides with any tree
         if (!CheckCollision(newPosition, colliders)) {
-            position = newPosition;  // Only update position if no collision
+            position = newPosition;  
         }
         position.y = CAMERAHEIGHT;  // Maintain height constant
     }
@@ -176,7 +176,7 @@ public:
             newPosition.z >= -50.0f && newPosition.z <= 50.0f) {
             DirectX::XMStoreFloat3(&position, newPos);
         }
-        position.y = CAMERAHEIGHT; // Keep height constant
+        position.y = CAMERAHEIGHT; 
     }
 
 
@@ -187,10 +187,10 @@ public:
 
         for (const auto& collider : colliders) {
             if (cameraAABB.intersects(collider)) {
-                return true;  // Collision detected
+                return true;  
             }
         }
-        return false;  // No collision
+        return false; 
     }
 
     void LockMouseToWindow(HWND hwnd) {

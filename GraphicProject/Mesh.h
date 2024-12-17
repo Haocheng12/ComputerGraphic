@@ -288,11 +288,6 @@ public:
 			normalNames.push_back(normal);
 			textures->load(device, normal);
 
-			/*string roughness = gemmeshes[i].material.find("roughness").getValue();
-			roughnessNames.push_back(roughness);
-			textures->load(device, roughness);*/
-
-
 			mesh.init(vertices, gemmeshes[i].indices, device);
 			meshes.push_back(mesh);
 		}
@@ -328,8 +323,7 @@ public:
 		}
 		animation.skeleton.globalInverse = ConvertToXMMATRIX(gemanimation.globalInverse);
 		instance.animation = &animation;
-		// Set global inverse matrix
-		//instance.animation->skeleton.globalInverse = ConvertToXMMATRIX(gemanimation.globalInverse);
+		
 	}
 
 	// Convert methods
@@ -345,19 +339,7 @@ public:
 			matrix.m[12], matrix.m[13], matrix.m[14], matrix.m[15]
 		);
 	}
-	void ThresholdMatrixValues(XMMATRIX& matrix, float threshold = 1e-6f) {
-		// Iterate over each element in the matrix (4x4)
-		for (int row = 0; row < 4; ++row) {
-			for (int col = 0; col < 4; ++col) {
-				float value = matrix.r[row].m128_f32[col];  // Get matrix element
-
-				// If the absolute value is below the threshold, set it to 0
-				if (fabs(value) < threshold) {
-					matrix.r[row].m128_f32[col] = matrix.r[row].m128_f32[col]*1000000;
-				}
-			}
-		}
-	}
+	
 	void draw(ID3D11DeviceContext* devicecontext, Textures textures, Shader* shader, DirectX::XMMATRIX world, DirectX::XMMATRIX vp) {
 		// Extract position from the world matrix (translation part)
 		
@@ -403,7 +385,7 @@ public:
 				vertices.push_back(v);
 			}
 
-			// Load textures as usual
+			
 			string diffuse = gemmeshes[i].material.find("diffuse").getValue();
 			textureNames.push_back(diffuse);
 			textures->load(device, diffuse);
@@ -422,7 +404,7 @@ public:
 	}
 
 	void draw(ID3D11DeviceContext* devicecontext, Textures textures, Shader* shader, DirectX::XMMATRIX world, DirectX::XMMATRIX vp) {
-		// Extract position from the world matrix (translation part)
+		
 		
 
 		shader->updateConstantVS("staticMeshBuffer", "W", &world);
@@ -452,17 +434,10 @@ public:
 	Mesh skyboxMesh;
 
 	void init(DXcore* core, const std::string& textureFile, Textures* textures) {
-		// Load the cube map texture using Textures manager
 		
-
-		
-		
-
-		textures->load(core->device, textureFile);  // Assuming Textures now supports cube maps
+		textures->load(core->device, textureFile);  
 		textureName = textureFile;
 
-
-		// Initialize the skybox mesh (cube)
 		cubeMeshInit(core->device);
 	}
 
@@ -474,7 +449,7 @@ public:
 		core->devicecontext->VSSetShader(shader->staticVertexShader, NULL, 0);
 		core->devicecontext->PSSetShader(shader->skyPixelShader, NULL, 0);
 
-		// Bind the cube map texture
+		
 		textures->bindTextureToPS(core->devicecontext, textureName, 0);
 
 		// Apply shader and draw skybox mesh
@@ -522,42 +497,41 @@ public:
 		vertices.push_back(addVertex(p6, Vec3(-1, 0, 0), 0.75f, 0.3334f));
 		vertices.push_back(addVertex(p2, Vec3(-1, 0, 0), 0.5f, 0.3334f));
 
-		// Top (+Y) [Rotated 360 degrees from original (180 degrees from mirrored)]
-		vertices.push_back(addVertex(p3, Vec3(0, -1, 0), 0.2499f, 0.3334f)); // (0.5f, 0.0f)
-		vertices.push_back(addVertex(p2, Vec3(0, -1, 0), 0.4999f, 0.3334f));  // (0.25f, 0.0f)
-		vertices.push_back(addVertex(p6, Vec3(0, -1, 0), 0.4999f, 0.0001f));    // (0.25f, 0.333f)
-		vertices.push_back(addVertex(p7, Vec3(0, -1, 0), 0.2499f, 0.0001f));   // (0.5f, 0.333f)
+		
+		vertices.push_back(addVertex(p3, Vec3(0, -1, 0), 0.2499f, 0.3334f));
+		vertices.push_back(addVertex(p2, Vec3(0, -1, 0), 0.4999f, 0.3334f));  
+		vertices.push_back(addVertex(p6, Vec3(0, -1, 0), 0.4999f, 0.0001f));   
+		vertices.push_back(addVertex(p7, Vec3(0, -1, 0), 0.2499f, 0.0001f));   
 
 
 
 
 
 
-		// Bottom (-Y) [Reverse TV for bottom face]
-		vertices.push_back(addVertex(p4, Vec3(0, 1, 0), 0.25f, 1.0f));  // tv reversed
-		vertices.push_back(addVertex(p5, Vec3(0, 1, 0), 0.5f, 1.0f));   // tv reversed
-		vertices.push_back(addVertex(p1, Vec3(0, 1, 0), 0.5f, 0.6675f)); // tv reversed
-		vertices.push_back(addVertex(p0, Vec3(0, 1, 0), 0.25f, 0.6675f)); // tv reversed
+	
+		vertices.push_back(addVertex(p4, Vec3(0, 1, 0), 0.25f, 1.0f)); 
+		vertices.push_back(addVertex(p5, Vec3(0, 1, 0), 0.5f, 1.0f));   
+		vertices.push_back(addVertex(p1, Vec3(0, 1, 0), 0.5f, 0.6675f)); 
+		vertices.push_back(addVertex(p0, Vec3(0, 1, 0), 0.25f, 0.6675f));
 
 		// Create indices
 		std::vector<unsigned int> indices;
-		indices.push_back(2); indices.push_back(1); indices.push_back(0); // Reversed
-		indices.push_back(3); indices.push_back(2); indices.push_back(0); // Reversed
+		indices.push_back(2); indices.push_back(1); indices.push_back(0);
+		indices.push_back(3); indices.push_back(2); indices.push_back(0); 
 
-		indices.push_back(6); indices.push_back(5); indices.push_back(4); // Reversed
-		indices.push_back(7); indices.push_back(6); indices.push_back(4); // Reversed
+		indices.push_back(6); indices.push_back(5); indices.push_back(4); 
+		indices.push_back(7); indices.push_back(6); indices.push_back(4); 
 
-		indices.push_back(10); indices.push_back(9); indices.push_back(8); // Reversed
-		indices.push_back(11); indices.push_back(10); indices.push_back(8); // Reversed
+		indices.push_back(10); indices.push_back(9); indices.push_back(8); 
+		indices.push_back(11); indices.push_back(10); indices.push_back(8); 
 
-		indices.push_back(14); indices.push_back(13); indices.push_back(12); // Reversed
-		indices.push_back(15); indices.push_back(14); indices.push_back(12); // Reversed
+		indices.push_back(15); indices.push_back(14); indices.push_back(12); 
 
-		indices.push_back(18); indices.push_back(17); indices.push_back(16); // Reversed
-		indices.push_back(19); indices.push_back(18); indices.push_back(16); // Reversed
+		indices.push_back(18); indices.push_back(17); indices.push_back(16);
+		indices.push_back(19); indices.push_back(18); indices.push_back(16);
 
-		indices.push_back(22); indices.push_back(21); indices.push_back(20); // Reversed
-		indices.push_back(23); indices.push_back(22); indices.push_back(20); // Reversed
+		indices.push_back(22); indices.push_back(21); indices.push_back(20); 
+		indices.push_back(23); indices.push_back(22); indices.push_back(20); 
 
 
 		// Initialize mesh

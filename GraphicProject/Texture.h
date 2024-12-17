@@ -45,7 +45,7 @@ public:
         texDesc.Usage = D3D11_USAGE_DEFAULT;
         texDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
         texDesc.CPUAccessFlags = 0;
-        //texDesc.MipLevels = 1;
+       
         D3D11_SUBRESOURCE_DATA initData = {};
         initData.pSysMem = (channels == 4 && texelsWithAlpha) ? texelsWithAlpha : texels;
         initData.SysMemPitch = width * channels;
