@@ -1,7 +1,7 @@
 #pragma once
 #include"Adapter.h"
 #include"window.h"
-#include"Mesh.h"
+
 
 
 class DXcore {

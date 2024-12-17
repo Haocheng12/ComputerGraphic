@@ -133,7 +133,9 @@
   <ItemGroup>
     <ClInclude Include="Adapter.h" />
     <ClInclude Include="Animation.h" />
+    <ClInclude Include="AnimationController.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Collison.h" />
     <ClInclude Include="DXCore.h" />
     <ClInclude Include="GamesEngineeringBase.h" />
     <ClInclude Include="GEMLoader.h" />

@@ -14,25 +14,27 @@ public:
         struct { float x, y, z; };
     };
 
-    Vec3() : x(0), y(0), z(0) {} 
-    Vec3(float x, float y, float z) : x(x), y(y), z(z) {} 
+    Vec3() : x(0), y(0), z(0) {}
+    Vec3(float x, float y, float z) : x(x), y(y), z(z) {}
 
     Vec3 operator+(const Vec3& pVec) const {
         return Vec3(v[0] + pVec.v[0], v[1] + pVec.v[1], v[2] + pVec.v[2]);
     }
+
     Vec3 operator-(const Vec3& v) const {
         return Vec3(x - v.x, y - v.y, z - v.z);
     }
+
     Vec3& operator+=(const Vec3& pVec) {
         v[0] += pVec.v[0];
         v[1] += pVec.v[1];
         v[2] += pVec.v[2];
         return *this;
     }
+
     Vec3 operator*(float scalar) const {
         return Vec3(x * scalar, y * scalar, z * scalar);
     }
-
 
     Vec3 normalize() const {
         float length = sqrt(x * x + y * y + z * z);
@@ -46,9 +48,6 @@ public:
         return Vec3(-v[0], -v[1], -v[2]);
     }
 
-
-
-
     float Dot(const Vec3& pVec) const {
         return v[0] * pVec.v[0] + v[1] * pVec.v[1] + v[2] * pVec.v[2];
     }
@@ -60,9 +59,8 @@ public:
             x * other.y - y * other.x
         );
     }
-  
 
-
+    // Max between two Vec3s
     static Vec3 Max(const Vec3& v1, const Vec3& v2) {
         return Vec3(
             max(v1.v[0], v2.v[0]),
@@ -71,8 +69,41 @@ public:
         );
     }
 
+    // Component-wise Max for this vector
     float Max() const {
         return max(x, max(y, z));
+    }
+
+    // Max component between this vector and another
+    Vec3 Max(const Vec3& other) const {
+        return Vec3(
+            max(x, other.x),
+            max(y, other.y),
+            max(z, other.z)
+        );
+    }
+
+    // Min between two Vec3s
+    static Vec3 Min(const Vec3& v1, const Vec3& v2) {
+        return Vec3(
+            min(v1.v[0], v2.v[0]),
+            min(v1.v[1], v2.v[1]),
+            min(v1.v[2], v2.v[2])
+        );
+    }
+
+    // Component-wise Min for this vector
+    float Min() const {
+        return min(x, min(y, z));
+    }
+
+    // Min component between this vector and another
+    Vec3 Min(const Vec3& other) const {
+        return Vec3(
+            min(x, other.x),
+            min(y, other.y),
+            min(z, other.z)
+        );
     }
 
     void print() const {
@@ -236,6 +267,7 @@ public:
         Matrix result;
         for (int i = 0; i < 4; ++i) {
             for (int j = 0; j < 4; ++j) {
+                result.m[i][j] = 0;
                 for (int k = 0; k < 4; ++k) {
                     result.m[i][j] += m[i][k] * other.m[k][j];
                 }

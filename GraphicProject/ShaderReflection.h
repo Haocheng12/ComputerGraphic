@@ -8,10 +8,12 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
-
+#include <iostream>
 #include "DXCore.h" // Replace with your DXCore etc
 
 #pragma comment(lib, "dxguid.lib")
+
+using namespace std;
 
 enum ShaderStage
 {
@@ -63,7 +65,7 @@ public:
 		}
 
 		ConstantBufferVariable cbVariable = constantBufferData[name];
-		cout << "Updating variable: " << name
+		std::cout << "Updating variable: " << name
 			<< " (offset: " << cbVariable.offset
 			<< ", size: " << cbVariable.size << ")" << endl;
 
@@ -71,21 +73,21 @@ public:
 		dirty = 1;  // Mark the buffer as needing re-upload
 	}
 
-	void upload(DXcore* core)
+	void upload(ID3D11DeviceContext* devicecontext)
 	{
 		if (dirty == 1)
 		{
 			D3D11_MAPPED_SUBRESOURCE mapped;
-			core->devicecontext->Map(cb, 0, D3D11_MAP_WRITE_DISCARD, 0, &mapped);
+			devicecontext->Map(cb, 0, D3D11_MAP_WRITE_DISCARD, 0, &mapped);
 			memcpy(mapped.pData, buffer, cbSizeInBytes);
-			core->devicecontext->Unmap(cb, 0);
+			devicecontext->Unmap(cb, 0);
 			if (shaderStage == ShaderStage::VertexShader)
 			{
-				core->devicecontext->VSSetConstantBuffers(index, 1, &cb);
+				devicecontext->VSSetConstantBuffers(index, 1, &cb);
 			}
 			if (shaderStage == ShaderStage::PixelShader)
 			{
-				core->devicecontext->PSSetConstantBuffers(index, 1, &cb);
+				devicecontext->PSSetConstantBuffers(index, 1, &cb);
 			}
 			dirty = 0;
 		}

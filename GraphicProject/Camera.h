@@ -2,9 +2,9 @@
 
 #include <DirectXMath.h>
 #include <windows.h>
+#include"Collison.h"
 
-
-const float CAMERAHEIGHT = 1.0f;
+const float CAMERAHEIGHT = 2.0f;
 class Camera {
 public:
     // Constructor
@@ -24,8 +24,8 @@ public:
     }
 
     // Update camera position based on input
-    void Update(float deltaTime, HWND hwnd) {
-        ProcessKeyboard(deltaTime);
+    void Update(float deltaTime, HWND hwnd, std::vector<AABB> colliders) {
+        ProcessKeyboard(deltaTime,colliders);
         ProcessMouse(hwnd);
         LockMouseToWindow(hwnd);
         UpdateViewMatrix();
@@ -35,7 +35,6 @@ public:
         }
     }
 
-private:
     // Camera attributes
     DirectX::XMFLOAT3 position;  // Camera position
     DirectX::XMFLOAT3 target;    // Camera target
@@ -69,23 +68,47 @@ private:
     }
 
     // Handle keyboard input
-    void ProcessKeyboard(float deltaTime) {
+    void ProcessKeyboard(float deltaTime, std::vector<AABB> colliders) {
         float velocity = speed * deltaTime;
 
-        // WASD controls
+        DirectX::XMFLOAT3 forward, right;
+        forward.x = cosf(DirectX::XMConvertToRadians(yaw));
+        forward.y = 0.0f;
+        forward.z = sinf(DirectX::XMConvertToRadians(yaw));
+
+        right.x = sinf(DirectX::XMConvertToRadians(yaw));
+        right.y = 0.0f;
+        right.z = -cosf(DirectX::XMConvertToRadians(yaw));
+
+        DirectX::XMFLOAT3 newPosition = position;
+
         if (GetAsyncKeyState('W') & 0x8000) {
-            MoveForward(velocity);
+            newPosition.x += forward.x * velocity;
+            newPosition.z += forward.z * velocity;
         }
         if (GetAsyncKeyState('S') & 0x8000) {
-            MoveForward(-velocity);
+            newPosition.x -= forward.x * velocity;
+            newPosition.z -= forward.z * velocity;
         }
         if (GetAsyncKeyState('A') & 0x8000) {
-            Strafe(-velocity);
+            newPosition.x -= right.x * velocity;
+            newPosition.z -= right.z * velocity;
         }
         if (GetAsyncKeyState('D') & 0x8000) {
-            Strafe(velocity);
+            newPosition.x += right.x * velocity;
+            newPosition.z += right.z * velocity;
         }
+        if (newPosition.x < -50.0f) newPosition.x = -50.0f;
+        if (newPosition.x > 50.0f) newPosition.x = 50.0f;
+        if (newPosition.z < -50.0f) newPosition.z = -50.0f;
+        if (newPosition.z > 50.0f) newPosition.z = 50.0f;
+        // Check if the new position collides with any tree
+        if (!CheckCollision(newPosition, colliders)) {
+            position = newPosition;  // Only update position if no collision
+        }
+        position.y = CAMERAHEIGHT;  // Maintain height constant
     }
+
 
     // Handle mouse input
     void ProcessMouse(HWND hwnd) {
@@ -134,35 +157,42 @@ private:
     }
 
 
-    // Move camera forward/backward
-    void MoveForward(float amount) {
-        DirectX::XMFLOAT3 forward;
-        forward.x = cosf(DirectX::XMConvertToRadians(yaw));
-        forward.y = 0.0f; // Maintain height
-        forward.z = sinf(DirectX::XMConvertToRadians(yaw));
 
-        DirectX::XMVECTOR pos = DirectX::XMLoadFloat3(&position);
-        DirectX::XMVECTOR dir = DirectX::XMVectorScale(DirectX::XMLoadFloat3(&forward), amount);
-
-        // Update position
-        DirectX::XMStoreFloat3(&position, DirectX::XMVectorAdd(pos, dir));
-        position.y = CAMERAHEIGHT; // Keep height constant
-    }
-
-    // Move camera left/right
     void Strafe(float amount) {
         DirectX::XMFLOAT3 right;
         right.x = sinf(DirectX::XMConvertToRadians(yaw));
-        right.y = 0.0f; // Maintain height
+        right.y = 0.0f;
         right.z = -cosf(DirectX::XMConvertToRadians(yaw));
 
         DirectX::XMVECTOR pos = DirectX::XMLoadFloat3(&position);
         DirectX::XMVECTOR dir = DirectX::XMVectorScale(DirectX::XMLoadFloat3(&right), amount);
+        DirectX::XMVECTOR newPos = DirectX::XMVectorAdd(pos, dir);
 
-        // Update position
-        DirectX::XMStoreFloat3(&position, DirectX::XMVectorAdd(pos, dir));
+        DirectX::XMFLOAT3 newPosition;
+        DirectX::XMStoreFloat3(&newPosition, newPos);
+
+        // Apply boundary constraints
+        if (newPosition.x >= -50.0f && newPosition.x <= 50.0f &&
+            newPosition.z >= -50.0f && newPosition.z <= 50.0f) {
+            DirectX::XMStoreFloat3(&position, newPos);
+        }
         position.y = CAMERAHEIGHT; // Keep height constant
     }
+
+
+    // Check if the new position collides with any tree or other object
+    bool CheckCollision(const DirectX::XMFLOAT3& newPosition, std::vector<AABB> colliders) {
+        AABB cameraAABB;
+        cameraAABB.setFromCenterAndSize(newPosition);
+
+        for (const auto& collider : colliders) {
+            if (cameraAABB.intersects(collider)) {
+                return true;  // Collision detected
+            }
+        }
+        return false;  // No collision
+    }
+
     void LockMouseToWindow(HWND hwnd) {
         RECT windowRect;
         RECT rect;

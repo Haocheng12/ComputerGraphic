@@ -11,6 +11,15 @@ struct PS_INPUT
 
 float4 PS(PS_INPUT input) : SV_Target0
 {
-    float4 colour = tex.Sample(samplerLinear, input.TexCoords);
-    return float4(colour.rgb, 1.0);
+    // Sample the texture
+    float4 albedo = tex.Sample(samplerLinear, input.TexCoords);
+
+    // Alpha test: discard the fragment if alpha is less than 0.5
+    if (albedo.a < 0.5)
+    {
+        discard;
+    }
+
+    // Return the color with the sampled texture's RGB, maintaining alpha = 1.0
+    return float4(albedo.rgb*0.3, 1.0);  // Use albedo.rgb, set alpha to 1.0 for full opacity
 }
